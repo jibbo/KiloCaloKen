@@ -32,15 +32,14 @@ struct DaysList: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(last30Days, id: \.timeIntervalSince1970) { item in
-                    let fillColor: Color = isSelectedDay(item) ? Color.green.opacity(0.2) : Color.gray.opacity(0.2)
+                    let fillColor: Color = isSelectedDay(item) ? Color.accentColor.opacity(0.25) : Color.gray.opacity(0.2)
                     VStack {
                         Text(monthFormatter.string(from: item)).bold()
                         Text(dayFormatter.string(from: item))
                     }
                     .padding()
                     .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(fillColor)
+                        Circle().fill(fillColor)
                     )
                     .onTapGesture {
                         viewModel.selectedDay = item
@@ -53,6 +52,7 @@ struct DaysList: View {
                 for i in 0...30 {
                     last30Days.append(Calendar.current.date(byAdding: .day, value: -i, to: Date())!)
                 }
+                viewModel.selectedDay = last30Days[0]
             }
         }
     }
@@ -65,17 +65,18 @@ struct MacroNutrientsSummaryView: View{
         self.viewModel = viewModel
     }
     
-    var body: some View{HStack{
-        GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
-            Text(String(format: "%.2f", viewModel.cho))
+    var body: some View{
+        HStack{
+            GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
+                Text(String(format: "%.2f", viewModel.cho))
+            }
+            GroupBox(label: Label("PRO", systemImage: "dumbbell")) {
+                Text(String(format: "%.2f", viewModel.pro))
+            }
+            GroupBox(label: Label("FAT", systemImage: "birthday.cake")) {
+                Text(String(format: "%.2f", viewModel.fat))
+            }
         }
-        GroupBox(label: Label("PRO", systemImage: "dumbbell")) {
-            Text(String(format: "%.2f", viewModel.pro))
-        }
-        GroupBox(label: Label("FAT", systemImage: "birthday.cake")) {
-            Text(String(format: "%.2f", viewModel.fat))
-        }
-    }
     }
 }
 
@@ -115,7 +116,7 @@ struct FoodList: View{
             if todayFoods.isEmpty{
                 ContentUnavailableView(
                     label: {Label("No food yet", systemImage: "list.bullet.rectangle.portrait")},
-                    description:{ Text("Start adding food you ate today!")}
+                    description:{ Text("Start adding food for this day!")}
                 )
             }
         }

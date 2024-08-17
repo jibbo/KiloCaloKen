@@ -20,8 +20,13 @@ struct ContentView: View {
                 }
                 MacroNutrientsSummaryView(viewModel: viewModel)
                 FoodList(viewModel: viewModel)
-                Button("Add") {
+                Button {
                     viewModel.showAddSheet()
+                } label: {
+                    Image(systemName: "plus")
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(Circle().fill(Color.accentColor))
                 }
             }
             .padding()
