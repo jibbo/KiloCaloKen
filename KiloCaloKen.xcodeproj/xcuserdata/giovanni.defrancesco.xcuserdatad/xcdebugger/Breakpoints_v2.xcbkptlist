@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "90CAB2BE-31D6-449E-A1BE-71A1416203BE"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BFB8451A-9F75-4C60-B091-9EA062B5D5A9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "KiloCaloKen/data/OpenFoodFactApiService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "scanProduct(ean:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3FA2573F-0947-4337-BD91-B15C14DD83AA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "KiloCaloKen/data/OpenFoodFactApiService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "scanProduct(ean:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9DDE0391-A426-42CF-B4C8-4E64E9591397"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "KiloCaloKen/ui/Components.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "9DDE0391-A426-42CF-B4C8-4E64E9591397 - f06d5a1b3aa59241"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;CodeScanner.ScanResult, CodeScanner.ScanError&gt;) -&gt; () in closure #1 () -&gt; SwiftUI.TupleView&lt;(CodeScanner.CodeScannerView, SwiftUI.TextField&lt;SwiftUI.Text&gt;, SwiftUI.Button&lt;SwiftUI.Text&gt;)&gt; in KiloCaloKen.SearchProductSheetView.body.getter : some"
+                  moduleName = "KiloCaloKen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/giovanni.defrancesco/XCodeProject/KiloCaloKen/KiloCaloKen/ui/Components.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93">
+               </Location>
+               <Location
+                  uuid = "9DDE0391-A426-42CF-B4C8-4E64E9591397 - 40e5dc4dfd4a4f72"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable () async -&gt; () in closure #1 (Swift.Result&lt;CodeScanner.ScanResult, CodeScanner.ScanError&gt;) -&gt; () in closure #1 () -&gt; SwiftUI.TupleView&lt;(CodeScanner.CodeScannerView, SwiftUI.TextField&lt;SwiftUI.Text&gt;, SwiftUI.Button&lt;SwiftUI.Text&gt;)&gt; in KiloCaloKen.SearchProductSheetView.body.getter : some"
+                  moduleName = "KiloCaloKen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/giovanni.defrancesco/XCodeProject/KiloCaloKen/KiloCaloKen/ui/Components.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93">
+               </Location>
+               <Location
+                  uuid = "9DDE0391-A426-42CF-B4C8-4E64E9591397 - 57bd788d6765e81c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #1 @Sendable () async -&gt; () in closure #1 (Swift.Result&lt;CodeScanner.ScanResult, CodeScanner.ScanError&gt;) -&gt; () in closure #1 () -&gt; SwiftUI.TupleView&lt;(CodeScanner.CodeScannerView, SwiftUI.TextField&lt;SwiftUI.Text&gt;, SwiftUI.Button&lt;SwiftUI.Text&gt;)&gt; in KiloCaloKen.SearchProductSheetView.body.getter : some"
+                  moduleName = "KiloCaloKen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/giovanni.defrancesco/XCodeProject/KiloCaloKen/KiloCaloKen/ui/Components.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7D6E96F0-6AD8-458B-8E0B-C7D62FE65359"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "KiloCaloKen/ui/Components.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

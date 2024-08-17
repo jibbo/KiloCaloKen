@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A64AABD2C6775BA00995252 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 4A64AABC2C6775BA00995252 /* CodeScanner */; };
+		4A64AABF2C67B0AA00995252 /* LocalProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A64AABE2C67B0AA00995252 /* LocalProduct.swift */; };
+		4A64AAC22C67EAE500995252 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A64AAC12C67EAE500995252 /* Components.swift */; };
 		4AAB0CE52C641AA200B45518 /* KiloCaloKenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0CE42C641AA200B45518 /* KiloCaloKenApp.swift */; };
 		4AAB0CE72C641AA200B45518 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0CE62C641AA200B45518 /* ContentView.swift */; };
 		4AAB0CE92C641AA300B45518 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AAB0CE82C641AA300B45518 /* Assets.xcassets */; };
@@ -14,6 +17,11 @@
 		4AAB0CF62C641AA300B45518 /* KiloCaloKenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0CF52C641AA300B45518 /* KiloCaloKenTests.swift */; };
 		4AAB0D002C641AA300B45518 /* KiloCaloKenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0CFF2C641AA300B45518 /* KiloCaloKenUITests.swift */; };
 		4AAB0D022C641AA300B45518 /* KiloCaloKenUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0D012C641AA300B45518 /* KiloCaloKenUITestsLaunchTests.swift */; };
+		4AAB0D0F2C64251F00B45518 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0D0E2C64251F00B45518 /* HomeViewModel.swift */; };
+		4AAB0D132C64A1BC00B45518 /* RemoteProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0D122C64A1BC00B45518 /* RemoteProduct.swift */; };
+		4AAB0D162C64A38300B45518 /* FoodRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0D152C64A38300B45518 /* FoodRepository.swift */; };
+		4AAB0D182C64A3BE00B45518 /* RemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0D172C64A3BE00B45518 /* RemoteRepository.swift */; };
+		4AAB0D1D2C64A57000B45518 /* OpenFoodFactApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0D1C2C64A57000B45518 /* OpenFoodFactApiService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4A64AABE2C67B0AA00995252 /* LocalProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalProduct.swift; sourceTree = "<group>"; };
+		4A64AAC12C67EAE500995252 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		4AAB0CE12C641AA200B45518 /* KiloCaloKen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KiloCaloKen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AAB0CE42C641AA200B45518 /* KiloCaloKenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiloCaloKenApp.swift; sourceTree = "<group>"; };
 		4AAB0CE62C641AA200B45518 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,6 +54,11 @@
 		4AAB0CFB2C641AA300B45518 /* KiloCaloKenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KiloCaloKenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AAB0CFF2C641AA300B45518 /* KiloCaloKenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiloCaloKenUITests.swift; sourceTree = "<group>"; };
 		4AAB0D012C641AA300B45518 /* KiloCaloKenUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiloCaloKenUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4AAB0D0E2C64251F00B45518 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		4AAB0D122C64A1BC00B45518 /* RemoteProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteProduct.swift; sourceTree = "<group>"; };
+		4AAB0D152C64A38300B45518 /* FoodRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRepository.swift; sourceTree = "<group>"; };
+		4AAB0D172C64A3BE00B45518 /* RemoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteRepository.swift; sourceTree = "<group>"; };
+		4AAB0D1C2C64A57000B45518 /* OpenFoodFactApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFoodFactApiService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A64AABD2C6775BA00995252 /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +87,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A64AAC02C67E8A900995252 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				4A64AAC12C67EAE500995252 /* Components.swift */,
+				4AAB0CE62C641AA200B45518 /* ContentView.swift */,
+				4AAB0D0E2C64251F00B45518 /* HomeViewModel.swift */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
 		4AAB0CD82C641AA200B45518 = {
 			isa = PBXGroup;
 			children = (
@@ -94,8 +120,10 @@
 		4AAB0CE32C641AA200B45518 /* KiloCaloKen */ = {
 			isa = PBXGroup;
 			children = (
+				4A64AAC02C67E8A900995252 /* ui */,
+				4AAB0D142C64A36600B45518 /* domain */,
+				4AAB0D102C64A18700B45518 /* data */,
 				4AAB0CE42C641AA200B45518 /* KiloCaloKenApp.swift */,
-				4AAB0CE62C641AA200B45518 /* ContentView.swift */,
 				4AAB0CE82C641AA300B45518 /* Assets.xcassets */,
 				4AAB0CEA2C641AA300B45518 /* Preview Content */,
 			);
@@ -127,6 +155,33 @@
 			path = KiloCaloKenUITests;
 			sourceTree = "<group>";
 		};
+		4AAB0D102C64A18700B45518 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				4AAB0D112C64A19200B45518 /* model */,
+				4AAB0D1C2C64A57000B45518 /* OpenFoodFactApiService.swift */,
+				4AAB0D172C64A3BE00B45518 /* RemoteRepository.swift */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		4AAB0D112C64A19200B45518 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				4AAB0D122C64A1BC00B45518 /* RemoteProduct.swift */,
+				4A64AABE2C67B0AA00995252 /* LocalProduct.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		4AAB0D142C64A36600B45518 /* domain */ = {
+			isa = PBXGroup;
+			children = (
+				4AAB0D152C64A38300B45518 /* FoodRepository.swift */,
+			);
+			path = domain;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,6 +198,9 @@
 			dependencies = (
 			);
 			name = KiloCaloKen;
+			packageProductDependencies = (
+				4A64AABC2C6775BA00995252 /* CodeScanner */,
+			);
 			productName = KiloCaloKen;
 			productReference = 4AAB0CE12C641AA200B45518 /* KiloCaloKen.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +273,9 @@
 				Base,
 			);
 			mainGroup = 4AAB0CD82C641AA200B45518;
+			packageReferences = (
+				4A64AABB2C6775BA00995252 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+			);
 			productRefGroup = 4AAB0CE22C641AA200B45518 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -258,7 +319,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AAB0CE72C641AA200B45518 /* ContentView.swift in Sources */,
+				4A64AABF2C67B0AA00995252 /* LocalProduct.swift in Sources */,
+				4AAB0D1D2C64A57000B45518 /* OpenFoodFactApiService.swift in Sources */,
+				4AAB0D182C64A3BE00B45518 /* RemoteRepository.swift in Sources */,
+				4AAB0D0F2C64251F00B45518 /* HomeViewModel.swift in Sources */,
 				4AAB0CE52C641AA200B45518 /* KiloCaloKenApp.swift in Sources */,
+				4AAB0D132C64A1BC00B45518 /* RemoteProduct.swift in Sources */,
+				4A64AAC22C67EAE500995252 /* Components.swift in Sources */,
+				4AAB0D162C64A38300B45518 /* FoodRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,6 +493,8 @@
 				DEVELOPMENT_TEAM = Y39Y2Z84MF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires access to the camera to scan barcodes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -454,6 +524,8 @@
 				DEVELOPMENT_TEAM = Y39Y2Z84MF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires access to the camera to scan barcodes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -588,6 +660,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4A64AABB2C6775BA00995252 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = exactVersion;
+				version = 2.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4A64AABC2C6775BA00995252 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A64AABB2C6775BA00995252 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4AAB0CD92C641AA200B45518 /* Project object */;
 }
