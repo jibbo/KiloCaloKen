@@ -10,6 +10,54 @@ import SwiftUI
 import SwiftData
 import CodeScanner
 
+struct DaysList: View {
+    @State private var last30Days: [Date] = []
+    
+    private var viewModel: HomeViewModel
+    
+    private let monthFormatter = DateFormatter()
+    private let dayFormatter = DateFormatter()
+    
+    init(viewModel: HomeViewModel){
+        self.viewModel = viewModel
+        self.monthFormatter.dateFormat = "MMM"
+        self.dayFormatter.dateFormat = "dd"
+    }
+    
+    fileprivate func isSelectedDay(_ item: Date) -> Bool {
+        return item.timeIntervalSince1970 == viewModel.selectedDay.timeIntervalSince1970
+    }
+    
+    var body: some View{
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(last30Days, id: \.timeIntervalSince1970) { item in
+                    let fillColor: Color = isSelectedDay(item) ? Color.green.opacity(0.2) : Color.gray.opacity(0.2)
+                    VStack {
+                        Text(monthFormatter.string(from: item)).bold()
+                        Text(dayFormatter.string(from: item))
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(fillColor)
+                    )
+                    .onTapGesture {
+                        viewModel.selectedDay = item
+                    }
+                    
+                }
+                .listStyle(.plain)
+            }
+            .onAppear{
+                for i in 0...30 {
+                    last30Days.append(Calendar.current.date(byAdding: .day, value: -i, to: Date())!)
+                }
+            }
+        }
+    }
+}
+
 struct MacroNutrientsSummaryView: View{
     @ObservedObject private var viewModel: HomeViewModel
     
@@ -19,13 +67,13 @@ struct MacroNutrientsSummaryView: View{
     
     var body: some View{HStack{
         GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
-            Text(String(viewModel.cho))
+            Text(String(format: "%.2f", viewModel.cho))
         }
         GroupBox(label: Label("PRO", systemImage: "dumbbell")) {
-            Text(String(viewModel.pro))
+            Text(String(format: "%.2f", viewModel.pro))
         }
         GroupBox(label: Label("FAT", systemImage: "birthday.cake")) {
-            Text(String(viewModel.fat))
+            Text(String(format: "%.2f", viewModel.fat))
         }
     }
     }
@@ -39,7 +87,7 @@ struct FoodList: View{
         self.viewModel = viewModel
         
         let calendar = Calendar.current
-        let startOfDay = calendar.startOfDay(for: Date())
+        let startOfDay = calendar.startOfDay(for: viewModel.selectedDay)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
         
         _todayFoods = Query(
@@ -74,6 +122,10 @@ struct FoodList: View{
         .onAppear(perform: {
             viewModel.updateFoods(foods: todayFoods)
         })
+        .onChange(of: todayFoods){
+            viewModel.resetMacros()
+            viewModel.updateFoods(foods: todayFoods)
+        }
     }
 }
 
@@ -112,17 +164,45 @@ struct QuantitySheetView: View{
     private var viewModel: HomeViewModel
     
     @State private var quantity: String = "100.0"
+    @FocusState private var isFocused: Bool
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
     
-    var body: some View {VStack{
-        TextField("Quantity", text: $quantity)
-        Button("Add"){
-            viewModel.addFood(quantity: Double(quantity) ?? 100.0)
-        }
+    fileprivate func getFormattedMacro(macro: Double?) -> Text {
+        return Text(String(format: "%.2f", (macro ?? 0.0) * ((Double(quantity) ?? 0.0)/100)))
     }
-    .padding()
+    
+    var body: some View {
+        VStack{
+            Text(viewModel.lastSearchedFood?.productName ?? "N/A")
+            HStack{
+                GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
+                    getFormattedMacro(macro: viewModel.lastSearchedFood?.nutriments.carbohydrates100G)
+                }
+                GroupBox(label: Label("PRO", systemImage: "dumbbell")) {
+                    getFormattedMacro(macro: viewModel.lastSearchedFood?.nutriments.proteins100G)
+                }
+                GroupBox(label: Label("FAT", systemImage: "birthday.cake")) {
+                    getFormattedMacro(macro: viewModel.lastSearchedFood?.nutriments.fat100G)
+                }
+            }
+            Spacer()
+            TextField("Quantity", text: $quantity).keyboardType(.numberPad).focused($isFocused).onAppear{
+                isFocused = true
+            }
+            Spacer()
+            HStack {
+                Button("Cancel"){
+                    viewModel.shouldShowQuantitySheet = false
+                }
+                Spacer()
+                Button("Add"){
+                    viewModel.addFood(quantity: quantity)
+                }
+            }
+        }
+        .padding()
     }
 }

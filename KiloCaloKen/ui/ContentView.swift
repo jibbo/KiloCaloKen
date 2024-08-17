@@ -14,8 +14,9 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                DaysList(viewModel: viewModel)
                 GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
-                    Text(String(viewModel.totalKcal))
+                    Text(String(format: "%.2f", viewModel.totalKcal))
                 }
                 MacroNutrientsSummaryView(viewModel: viewModel)
                 FoodList(viewModel: viewModel)

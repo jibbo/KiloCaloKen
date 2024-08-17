@@ -24,12 +24,11 @@ class LocalProduct: Codable {
         self.quantity = quantity
     }
     
-    init(from: Product, quantity: Double){
-        let nowDate: Date = Date.now
-        self.id = nowDate.hashValue
+    init(from: Product, quantity: Double, dateAdded: Date = Date.now){
+        self.id = dateAdded.hashValue
         self.nutriments = LocalNutriments(from: from.nutriments)
         self.productName = from.productName
-        self.dateAdded = nowDate
+        self.dateAdded = dateAdded
         self.quantity = quantity
     }
     
