@@ -133,7 +133,7 @@ struct FoodList: View{
 struct SearchProductSheetView: View{
     private var viewModel: HomeViewModel
     
-    @State private var eanToSearch: String = "8001300551027"
+    @State private var eanToSearch: String = ""
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -150,7 +150,7 @@ struct SearchProductSheetView: View{
                 print(error.localizedDescription)
             }
         }
-        TextField("EAN", text: $eanToSearch)
+        TextField("Type here an EAN if scanning fails", text: $eanToSearch)
         Button("Search"){
             Task{
                 await viewModel.searchEan(ean: eanToSearch)
@@ -177,7 +177,19 @@ struct QuantitySheetView: View{
     
     var body: some View {
         VStack{
-            Text("\(viewModel.lastSearchedFood?.brands ?? "No brand" ) - \(viewModel.lastSearchedFood?.productName ?? "N/A")")
+            Text("\(viewModel.lastSearchedFood?.brands ?? "No brand" ) - \(viewModel.lastSearchedFood?.productName ?? "N/A")").font(.title).bold()
+            if(viewModel.lastSearchedFood?.imageFrontUrl != nil){
+                AsyncImage(
+                    url: URL(string: viewModel.lastSearchedFood!.imageFrontUrl!),
+                    content: { image in
+                        image.resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .clipShape(.buttonBorder)
+                    },
+                    placeholder: {
+                        ProgressView()
+                    })
+            }
             HStack{
                 GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
                     getFormattedMacro(macro: viewModel.lastSearchedFood?.nutriments.carbohydrates100G)
@@ -188,9 +200,6 @@ struct QuantitySheetView: View{
                 GroupBox(label: Label("FAT", systemImage: "birthday.cake")) {
                     getFormattedMacro(macro: viewModel.lastSearchedFood?.nutriments.fat100G)
                 }
-            }
-            if(viewModel.lastSearchedFood?.imageFrontThumbUrl != nil){
-                AsyncImage(url: URL(string: viewModel.lastSearchedFood!.imageFrontThumbUrl!))
             }
             Spacer()
             TextField("Quantity", text: $quantity).keyboardType(.numberPad).focused($isFocused).onAppear{

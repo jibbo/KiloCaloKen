@@ -9,10 +9,10 @@ import Foundation
 
 // TODO: replace with AlamoFire
 final class OpenFoodFactApiService {
-    let apiUrl = "https://world.openfoodfacts.net/api/v3/"
+    let apiUrl = "https://it.openfoodfacts.net/api/v3/"
     
     func scanProduct(ean: String) async throws -> RemoteProduct {
-        let foodFilters = "?fields=product_name,brands,image_front_thumb_url,nutriments"
+        let foodFilters = "?fields=product_name,brands,image_front_url,nutriments"
         let innerUrl = apiUrl+"product/"+ean+foodFilters
         print(innerUrl)
         guard let url = URL(string: innerUrl) else {
@@ -28,7 +28,6 @@ final class OpenFoodFactApiService {
             let decoder = JSONDecoder()
             return try decoder.decode(RemoteProduct.self, from: data)
         } catch(let error) {
-            print(data)
             print(error)
             throw Errors.InvalidParse
         }

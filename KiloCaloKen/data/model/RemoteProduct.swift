@@ -23,12 +23,12 @@ struct Product: Codable {
     let nutriments: Nutriments
     let productName: String
     let brands: String
-    let imageFrontThumbUrl: String?
+    let imageFrontUrl: String?
 
     enum CodingKeys: String, CodingKey {
         case nutriments, brands
         case productName = "product_name"
-        case imageFrontThumbUrl = "image_front_thumb_url"
+        case imageFrontUrl = "image_front_url"
     }
 }
 

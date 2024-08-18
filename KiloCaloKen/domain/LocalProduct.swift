@@ -33,7 +33,7 @@ class LocalProduct: Codable {
         self.nutriments = LocalNutriments(from: from.nutriments)
         self.brands = from.brands
         self.productName = from.productName
-        self.imageThumbUrl = from.imageFrontThumbUrl
+        self.imageThumbUrl = from.imageFrontUrl
         self.dateAdded = dateAdded
         self.quantity = quantity
     }
