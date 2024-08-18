@@ -12,14 +12,18 @@ import SwiftData
 class LocalProduct: Codable {
     let id: Int?
     let nutriments: LocalNutriments
+    let brands: String
     let productName: String
+    let imageThumbUrl: String?
     let dateAdded: Date
     let quantity: Double
     
-    init(id: Int?, nutriments: LocalNutriments, productName: String, dateAdded: Date, quantity: Double) {
+    init(id: Int?, nutriments: LocalNutriments, brands: String, productName: String, imageThumbUrl: String?, dateAdded: Date, quantity: Double) {
         self.id = id
         self.nutriments = nutriments
+        self.brands = brands
         self.productName = productName
+        self.imageThumbUrl = imageThumbUrl
         self.dateAdded = dateAdded
         self.quantity = quantity
     }
@@ -27,7 +31,9 @@ class LocalProduct: Codable {
     init(from: Product, quantity: Double, dateAdded: Date = Date.now){
         self.id = dateAdded.hashValue
         self.nutriments = LocalNutriments(from: from.nutriments)
+        self.brands = from.brands
         self.productName = from.productName
+        self.imageThumbUrl = from.imageFrontThumbUrl
         self.dateAdded = dateAdded
         self.quantity = quantity
     }
@@ -35,16 +41,20 @@ class LocalProduct: Codable {
     enum CodingKeys: String, CodingKey {
         case id
         case nutriments
+        case brands
         case productName = "product_name"
         case dateAdded = "date_added"
         case quantity
+        case imageThumbUrl = "image_thumb_url"
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
         self.nutriments = try container.decode(LocalNutriments.self, forKey: .nutriments)
+        self.brands = try container.decode(String.self, forKey: .brands)
         self.productName = try container.decode(String.self, forKey: .productName)
+        self.imageThumbUrl = try container.decode(String.self, forKey: .imageThumbUrl)
         self.dateAdded = try container.decode(Date.self, forKey: .dateAdded)
         self.quantity = try container.decode(Double.self, forKey: .quantity)
     }
@@ -53,7 +63,9 @@ class LocalProduct: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.id, forKey: .id)
         try container.encode(self.nutriments, forKey: .nutriments)
+        try container.encode(self.brands, forKey: .brands)
         try container.encode(self.productName, forKey: .productName)
+        try container.encode(self.imageThumbUrl, forKey: .imageThumbUrl)
         try container.encode(self.dateAdded, forKey: .dateAdded)
         try container.encode(self.quantity, forKey: .quantity)
     }

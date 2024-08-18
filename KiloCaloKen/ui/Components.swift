@@ -102,7 +102,7 @@ struct FoodList: View{
     var body: some View {
         List {
             ForEach(todayFoods, id: \.self){food in
-                Text(food.productName)
+                Text("\(food.brands) - \(food.productName)")
             }
             .onDelete(perform: { indexSet in
                 for index in indexSet{
@@ -177,7 +177,7 @@ struct QuantitySheetView: View{
     
     var body: some View {
         VStack{
-            Text(viewModel.lastSearchedFood?.productName ?? "N/A")
+            Text("\(viewModel.lastSearchedFood?.brands ?? "No brand" ) - \(viewModel.lastSearchedFood?.productName ?? "N/A")")
             HStack{
                 GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
                     getFormattedMacro(macro: viewModel.lastSearchedFood?.nutriments.carbohydrates100G)
@@ -188,6 +188,9 @@ struct QuantitySheetView: View{
                 GroupBox(label: Label("FAT", systemImage: "birthday.cake")) {
                     getFormattedMacro(macro: viewModel.lastSearchedFood?.nutriments.fat100G)
                 }
+            }
+            if(viewModel.lastSearchedFood?.imageFrontThumbUrl != nil){
+                AsyncImage(url: URL(string: viewModel.lastSearchedFood!.imageFrontThumbUrl!))
             }
             Spacer()
             TextField("Quantity", text: $quantity).keyboardType(.numberPad).focused($isFocused).onAppear{

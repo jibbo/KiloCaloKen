@@ -169,7 +169,6 @@
 			isa = PBXGroup;
 			children = (
 				4AAB0D122C64A1BC00B45518 /* RemoteProduct.swift */,
-				4A64AABE2C67B0AA00995252 /* LocalProduct.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -177,6 +176,7 @@
 		4AAB0D142C64A36600B45518 /* domain */ = {
 			isa = PBXGroup;
 			children = (
+				4A64AABE2C67B0AA00995252 /* LocalProduct.swift */,
 				4AAB0D152C64A38300B45518 /* FoodRepository.swift */,
 			);
 			path = domain;

@@ -22,10 +22,13 @@ struct RemoteProduct: Codable {
 struct Product: Codable {
     let nutriments: Nutriments
     let productName: String
+    let brands: String
+    let imageFrontThumbUrl: String?
 
     enum CodingKeys: String, CodingKey {
-        case nutriments
+        case nutriments, brands
         case productName = "product_name"
+        case imageFrontThumbUrl = "image_front_thumb_url"
     }
 }
 
