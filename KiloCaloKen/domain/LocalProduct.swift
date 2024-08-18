@@ -39,7 +39,7 @@ class LocalProduct: Codable {
         self.imageThumbUrl = from.imageFrontUrl
         self.dateAdded = dateAdded
         self.carbohydrates100G = from.nutriments.carbohydrates100G!
-        self.energyKcal100G = Double(from.nutriments.energy100G!)
+        self.energyKcal100G = Double(from.nutriments.energyKcal100G!)
         self.proteins100G = from.nutriments.proteins100G!
         self.fat100G = from.nutriments.fat100G!
         self.quantity = quantity
