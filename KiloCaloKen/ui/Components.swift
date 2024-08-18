@@ -18,7 +18,7 @@ struct DaysList: View {
     private let monthFormatter = DateFormatter()
     private let dayFormatter = DateFormatter()
     
-    init(viewModel: HomeViewModel){
+    init(_ viewModel: HomeViewModel){
         self.viewModel = viewModel
         self.monthFormatter.dateFormat = "MMM"
         self.dayFormatter.dateFormat = "dd"
@@ -61,7 +61,7 @@ struct DaysList: View {
 struct MacroNutrientsSummaryView: View{
     @ObservedObject private var viewModel: HomeViewModel
     
-    init(viewModel: HomeViewModel) {
+    init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
     
@@ -84,7 +84,7 @@ struct FoodList: View{
     private var viewModel: HomeViewModel
     @Query var todayFoods: [LocalProduct]
     
-    init(viewModel: HomeViewModel) {
+    init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
         
         let calendar = Calendar.current
@@ -135,7 +135,7 @@ struct SearchProductSheetView: View{
     
     @State private var eanToSearch: String = ""
     
-    init(viewModel: HomeViewModel) {
+    init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
     
@@ -154,11 +154,19 @@ struct SearchProductSheetView: View{
         Spacer()
         TextField("Type here an EAN if scanning fails", text: $eanToSearch)
         Spacer()
-        Button("Search"){
-            Task{
-                await viewModel.scanEan(eanToSearch)
+        HStack{
+            Button("I don't have the EAN"){
+                viewModel.sholdShowAddSheet = false
+                viewModel.shouldShowPickProduct = true
+            }
+            Spacer()
+            Button("Search"){
+                Task{
+                    await viewModel.scanEan(eanToSearch)
+                }
             }
         }
+        
     }
     .padding()
     }
@@ -170,7 +178,7 @@ struct QuantitySheetView: View{
     @State private var quantity: String = "100.0"
     @FocusState private var isFocused: Bool
     
-    init(viewModel: HomeViewModel) {
+    init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
     
@@ -226,19 +234,46 @@ struct QuantitySheetView: View{
 struct PickProductSheetView: View{
     private var viewModel: HomeViewModel
     
-    init(viewModel: HomeViewModel) {
+    @State private var searchTerm: String = ""
+    @FocusState private var isFocused: Bool
+    
+    init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
     
     var body: some View {
-        List {
-            ForEach(viewModel.lastProductsFound!, id: \.productName.hashValue){food in
-                Text(food.productName).onTapGesture {
-                    viewModel.foodSelected(food)
+        VStack{
+            TextField("Zucchini", text: $searchTerm)
+                .frame(minHeight: 100)
+                .focused($isFocused).onAppear{
+                    isFocused = true
+                }
+                .onChange(of: searchTerm){
+                    Task{
+                        await viewModel.searchFood(searchTerm)
+                    }
+                }
+            Spacer()
+            List {
+                ForEach(viewModel.lastProductsFound, id: \.productName.hashValue){food in
+                    Text(food.productName).onTapGesture {
+                        viewModel.foodSelected(food)
+                    }
+                }
+                if(viewModel.shouldShowLoading){
+                    ProgressView()
+                }
+            }
+            .listStyle(.plain)
+            .overlay{
+                if viewModel.lastProductsFound.isEmpty{
+                    ContentUnavailableView(
+                        label: {Label("Search for the food name", systemImage: "list.bullet.rectangle.portrait")},
+                        description:{ Text("All the possible foods will appear here")}
+                    )
                 }
             }
         }
-        .listStyle(.plain)
-        .background()
+        .padding()
     }
 }

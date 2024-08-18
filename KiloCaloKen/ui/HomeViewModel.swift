@@ -20,7 +20,7 @@ final class HomeViewModel: ObservableObject{
     @Published var shouldShowQuantitySheet = false
     @Published var shouldShowPickProduct = false
     @Published var productToBeAdded: LocalProduct? = nil
-    @Published var lastProductsFound: [LocalProduct]? = nil
+    @Published var lastProductsFound: [LocalProduct] = []
     @Published var selectedDay: Date = Date()
     
     private let repository: FoodRepository = RemoteRepository()
@@ -50,16 +50,22 @@ final class HomeViewModel: ObservableObject{
     }
     
     @MainActor
-    func searchFood(_ searchTerm: String) async {
+    func showFoodPicker() {
         self.sholdShowAddSheet = false
-        self.shouldShowAlert = false
-        self.shouldShowLoading = true
-        do{
-            lastProductsFound =  try await repository.searchFood(searchTerm)
-            self.shouldShowPickProduct = true
-            self.shouldShowLoading = false
-        }catch{
-            self.shouldShowAlert = true
+        self.shouldShowPickProduct = true
+        lastProductsFound = []
+    }
+    
+    @MainActor
+    func searchFood(_ searchTerm: String) async {
+        if(searchTerm.count>=3){
+            lastProductsFound = []
+            self.shouldShowLoading = true
+            do{
+                lastProductsFound =  try await repository.searchFood(searchTerm)
+            }catch{
+                self.shouldShowAlert = true
+            }
             self.shouldShowLoading = false
         }
     }
