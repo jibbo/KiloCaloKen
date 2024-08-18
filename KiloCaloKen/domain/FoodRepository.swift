@@ -8,5 +8,6 @@
 import Foundation
 
 protocol FoodRepository {
-    func getFood(ean: String) async throws -> Product
+    func scanEan(_ ean: String) async throws -> LocalProduct
+    func searchFood(_ productName: String) async throws -> [LocalProduct]
 }

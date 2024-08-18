@@ -102,7 +102,7 @@ struct FoodList: View{
     var body: some View {
         List {
             ForEach(todayFoods, id: \.self){food in
-                Text("\(food.brands) - \(food.productName)")
+                Text(food.productName)
             }
             .onDelete(perform: { indexSet in
                 for index in indexSet{
@@ -121,11 +121,11 @@ struct FoodList: View{
             }
         }
         .onAppear(perform: {
-            viewModel.updateFoods(foods: todayFoods)
+            viewModel.updateFoods(todayFoods)
         })
         .onChange(of: todayFoods){
             viewModel.resetMacros()
-            viewModel.updateFoods(foods: todayFoods)
+            viewModel.updateFoods(todayFoods)
         }
     }
 }
@@ -140,20 +140,23 @@ struct SearchProductSheetView: View{
     }
     
     var body: some View {VStack{
-        CodeScannerView(codeTypes: [.ean13, .ean8]) { response in
+        CodeScannerView(codeTypes: [.ean13, .ean8], showViewfinder: true) { response in
             switch response {
             case .success(let result):
                 Task{
-                    await viewModel.searchEan(ean: result.string)
+                    await viewModel.scanEan(result.string)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
+        .frame(maxHeight: 300)
+        Spacer()
         TextField("Type here an EAN if scanning fails", text: $eanToSearch)
+        Spacer()
         Button("Search"){
             Task{
-                await viewModel.searchEan(ean: eanToSearch)
+                await viewModel.scanEan(eanToSearch)
             }
         }
     }
@@ -177,10 +180,10 @@ struct QuantitySheetView: View{
     
     var body: some View {
         VStack{
-            Text("\(viewModel.lastSearchedFood?.brands ?? "No brand" ) - \(viewModel.lastSearchedFood?.productName ?? "N/A")").font(.title).bold()
-            if(viewModel.lastSearchedFood?.imageFrontUrl != nil){
+            Text(viewModel.productToBeAdded?.productName ?? "N/A").font(.title).bold()
+            if(viewModel.productToBeAdded?.imageThumbUrl != nil){
                 AsyncImage(
-                    url: URL(string: viewModel.lastSearchedFood!.imageFrontUrl!),
+                    url: URL(string: viewModel.productToBeAdded!.imageThumbUrl!),
                     content: { image in
                         image.resizable()
                             .aspectRatio(contentMode: .fit)
@@ -192,13 +195,13 @@ struct QuantitySheetView: View{
             }
             HStack{
                 GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
-                    getFormattedMacro(macro: viewModel.lastSearchedFood?.nutriments.carbohydrates100G)
+                    getFormattedMacro(macro: viewModel.productToBeAdded?.carbohydrates100G)
                 }
                 GroupBox(label: Label("PRO", systemImage: "dumbbell")) {
-                    getFormattedMacro(macro: viewModel.lastSearchedFood?.nutriments.proteins100G)
+                    getFormattedMacro(macro: viewModel.productToBeAdded?.proteins100G)
                 }
                 GroupBox(label: Label("FAT", systemImage: "birthday.cake")) {
-                    getFormattedMacro(macro: viewModel.lastSearchedFood?.nutriments.fat100G)
+                    getFormattedMacro(macro: viewModel.productToBeAdded?.fat100G)
                 }
             }
             Spacer()
@@ -212,10 +215,30 @@ struct QuantitySheetView: View{
                 }
                 Spacer()
                 Button("Add"){
-                    viewModel.addFood(quantity: quantity)
+                    viewModel.addFood(quantity)
                 }
             }
         }
         .padding()
+    }
+}
+
+struct PickProductSheetView: View{
+    private var viewModel: HomeViewModel
+    
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    var body: some View {
+        List {
+            ForEach(viewModel.lastProductsFound!, id: \.productName.hashValue){food in
+                Text(food.productName).onTapGesture {
+                    viewModel.foodSelected(food)
+                }
+            }
+        }
+        .listStyle(.plain)
+        .background()
     }
 }

@@ -18,7 +18,9 @@ final class HomeViewModel: ObservableObject{
     @Published var shouldShowLoading = false
     @Published var sholdShowAddSheet = false
     @Published var shouldShowQuantitySheet = false
-    @Published var lastSearchedFood: Product? = nil
+    @Published var shouldShowPickProduct = false
+    @Published var productToBeAdded: LocalProduct? = nil
+    @Published var lastProductsFound: [LocalProduct]? = nil
     @Published var selectedDay: Date = Date()
     
     private let repository: FoodRepository = RemoteRepository()
@@ -33,12 +35,12 @@ final class HomeViewModel: ObservableObject{
     }
     
     @MainActor
-    func searchEan(ean: String) async {
+    func scanEan(_ ean: String) async {
         self.sholdShowAddSheet = false
         self.shouldShowAlert = false
         self.shouldShowLoading = true
         do{
-            lastSearchedFood =  try await repository.getFood(ean: ean)
+            productToBeAdded =  try await repository.scanEan(ean)
             self.shouldShowQuantitySheet = true
             self.shouldShowLoading = false
         }catch{
@@ -48,24 +50,46 @@ final class HomeViewModel: ObservableObject{
     }
     
     @MainActor
-    func addFood(quantity: String) {
-        guard self.lastSearchedFood != nil else {
+    func searchFood(_ searchTerm: String) async {
+        self.sholdShowAddSheet = false
+        self.shouldShowAlert = false
+        self.shouldShowLoading = true
+        do{
+            lastProductsFound =  try await repository.searchFood(searchTerm)
+            self.shouldShowPickProduct = true
+            self.shouldShowLoading = false
+        }catch{
+            self.shouldShowAlert = true
+            self.shouldShowLoading = false
+        }
+    }
+    
+    @MainActor
+    func foodSelected(_ food: LocalProduct) {
+        self.shouldShowPickProduct = false
+        self.productToBeAdded =  food
+        self.shouldShowQuantitySheet = true
+    }
+    
+    @MainActor
+    func addFood(_ quantity: String) {
+        guard self.productToBeAdded != nil else {
             return
         }
         guard let quantityInNumber = Double(quantity) else {
             return
         }
         self.shouldShowLoading = true
-        let localFood: LocalProduct = LocalProduct.init(from: lastSearchedFood!, quantity: quantityInNumber, dateAdded: selectedDay)
+        let localFood: LocalProduct = LocalProduct.init(from: productToBeAdded!, quantity: quantityInNumber, dateAdded: selectedDay)
         modelContext?.insert(localFood)
-        updateFoods(foods: [localFood])
+        updateFoods([localFood])
         self.shouldShowQuantitySheet = false
         self.shouldShowLoading = false
     }
     
     func deleteFood(food: LocalProduct){
         modelContext?.delete(food)
-        removeFood(food: food)
+        removeFood(food)
     }
     
     func resetMacros(){
@@ -75,19 +99,19 @@ final class HomeViewModel: ObservableObject{
         fat = 0.0
     }
     
-    func updateFoods(foods: [LocalProduct]){
+    func updateFoods(_ foods: [LocalProduct]){
         for food in foods {
-            totalKcal+=Double(food.nutriments.energyKcal100G ?? 0) * (food.quantity/100.0)
-            cho+=(food.nutriments.carbohydrates100G ?? 0.0) * (food.quantity/100.0)
-            pro+=(food.nutriments.proteins100G ?? 0.0) * (food.quantity/100.0)
-            fat+=(food.nutriments.fat100G ?? 0.0)  * (food.quantity/100.0)
+            totalKcal+=Double(food.energyKcal100G) * (food.quantity/100.0)
+            cho+=(food.carbohydrates100G) * (food.quantity/100.0)
+            pro+=(food.proteins100G) * (food.quantity/100.0)
+            fat+=(food.fat100G)  * (food.quantity/100.0)
         }
     }
     
-    func removeFood(food: LocalProduct){
-        totalKcal-=Double(food.nutriments.energyKcal100G ?? 0) * (food.quantity/100.0)
-        cho-=(food.nutriments.carbohydrates100G ?? 0.0) * (food.quantity/100.0)
-        pro-=(food.nutriments.proteins100G ?? 0.0) * (food.quantity/100.0)
-        fat-=(food.nutriments.fat100G ?? 0.0)  * (food.quantity/100.0)
+    func removeFood(_ food: LocalProduct){
+        totalKcal-=Double(food.energyKcal100G) * (food.quantity/100.0)
+        cho-=(food.carbohydrates100G) * (food.quantity/100.0)
+        pro-=(food.proteins100G) * (food.quantity/100.0)
+        fat-=(food.fat100G)  * (food.quantity/100.0)
     }
 }

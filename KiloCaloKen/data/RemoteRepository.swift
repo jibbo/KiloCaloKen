@@ -11,13 +11,19 @@ final class RemoteRepository: FoodRepository {
     // TODO: injection
     let foodService = OpenFoodFactApiService()
     
-    func getFood(ean: String) async throws -> Product {
-        let productSearch = try await foodService.scanProduct(ean: ean)
-        // TODO: map to domain model
+    func scanEan(_ ean: String) async throws -> LocalProduct {
+        let productSearch = try await foodService.scanEan(ean)
         if(productSearch.product != nil){
-            return productSearch.product!
+            return LocalProduct.init(from: productSearch.product!)
         }else{
             throw Errors.InvalidResponse
+        }
+    }
+    
+    func searchFood(_ productName: String) async throws -> [LocalProduct] {
+        let productSearch = try await foodService.searchProduct(productName)
+        return productSearch.map {
+            LocalProduct.init(from: $0)
         }
     }
 }
