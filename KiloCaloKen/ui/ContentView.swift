@@ -14,11 +14,11 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                DaysList(viewModel)
+                DaysList()
                 GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
                     Text(String(format: "%.2f", viewModel.totalKcal))
                 }
-                MacroNutrientsSummaryView(viewModel)
+                MacroNutrientsSummaryView()
                 FoodList(viewModel)
                 Button {
                     viewModel.showAddSheet()
@@ -37,13 +37,13 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $viewModel.sholdShowAddSheet, content: {
-            SearchProductSheetView(viewModel)
+            SearchProductSheetView()
         })
         .sheet(isPresented: $viewModel.shouldShowQuantitySheet, content: {
-            QuantitySheetView(viewModel)
+            QuantitySheetView()
         })
         .sheet(isPresented: $viewModel.shouldShowPickProduct, content: {
-            PickProductSheetView(viewModel)
+            PickProductSheetView()
         })
         .alert(isPresented: $viewModel.shouldShowAlert, content: {
             Alert(title: Text("Couldn't find EAN"))
@@ -53,4 +53,7 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(
+            HomeViewModel(modelContext: nil)
+        )
 }

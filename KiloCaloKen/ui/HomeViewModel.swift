@@ -59,15 +59,17 @@ final class HomeViewModel: ObservableObject{
     
     @MainActor
     func searchFood(_ searchTerm: String) async {
-//        if(searchTerm.count>=3){
-            self.shouldShowLoading = true
-            do{
+        if(searchTerm.count>=4) {
+            do {
+                self.shouldShowLoading = true
                 self.lastProductsFound =  try await repository.searchFood(searchTerm)
-            }catch{
+                self.shouldShowLoading = false
+            } catch {
                 self.shouldShowAlert = true
             }
-            self.shouldShowLoading = false
-//        }
+        } else {
+            self.lastProductsFound = []
+        }
     }
     
     @MainActor

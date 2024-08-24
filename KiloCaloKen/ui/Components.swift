@@ -11,15 +11,13 @@ import SwiftData
 import CodeScanner
 
 struct DaysList: View {
+    @EnvironmentObject private var viewModel: HomeViewModel
     @State private var last30Days: [Date] = []
-    
-    private var viewModel: HomeViewModel
     
     private let monthFormatter = DateFormatter()
     private let dayFormatter = DateFormatter()
     
-    init(_ viewModel: HomeViewModel){
-        self.viewModel = viewModel
+    init(){
         self.monthFormatter.dateFormat = "MMM"
         self.dayFormatter.dateFormat = "dd"
     }
@@ -59,11 +57,7 @@ struct DaysList: View {
 }
 
 struct MacroNutrientsSummaryView: View{
-    @ObservedObject private var viewModel: HomeViewModel
-    
-    init(_ viewModel: HomeViewModel) {
-        self.viewModel = viewModel
-    }
+    @EnvironmentObject private var viewModel: HomeViewModel
     
     var body: some View{
         HStack{
@@ -86,7 +80,6 @@ struct FoodList: View{
     
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
-        
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: viewModel.selectedDay)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
@@ -131,13 +124,8 @@ struct FoodList: View{
 }
 
 struct SearchProductSheetView: View{
-    private var viewModel: HomeViewModel
-    
+    @EnvironmentObject private var viewModel: HomeViewModel
     @State private var eanToSearch: String = ""
-    
-    init(_ viewModel: HomeViewModel) {
-        self.viewModel = viewModel
-    }
     
     var body: some View {VStack{
         CodeScannerView(codeTypes: [.ean13, .ean8], showViewfinder: true) { response in
@@ -176,14 +164,10 @@ struct SearchProductSheetView: View{
 }
 
 struct QuantitySheetView: View{
-    private var viewModel: HomeViewModel
     
+    @EnvironmentObject private var viewModel: HomeViewModel
     @State private var quantity: String = "100.0"
     @FocusState private var isFocused: Bool
-    
-    init(_ viewModel: HomeViewModel) {
-        self.viewModel = viewModel
-    }
     
     fileprivate func getFormattedMacro(macro: Double?) -> Text {
         return Text(String(format: "%.2f", (macro ?? 0.0) * ((Double(quantity) ?? 0.0)/100)))
@@ -235,21 +219,15 @@ struct QuantitySheetView: View{
 }
 
 struct PickProductSheetView: View{
-    private var viewModel: HomeViewModel
-    
+    @EnvironmentObject private var viewModel: HomeViewModel
     @State private var searchTerm: String = ""
     @FocusState private var isFocused: Bool
-    
-    init(_ viewModel: HomeViewModel) {
-        self.viewModel = viewModel
-    }
     
     var body: some View {
         VStack{
             HStack{
                 Image(systemName: "magnifyingglass")
                 TextField("Zucchini", text: $searchTerm)
-                    .frame(minHeight: 100)
                     .focused($isFocused).onAppear{
                         isFocused = true
                     }
