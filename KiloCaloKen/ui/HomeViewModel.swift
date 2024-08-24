@@ -32,6 +32,7 @@ final class HomeViewModel: ObservableObject{
     
     func showAddSheet(){
         self.sholdShowAddSheet = true
+        self.lastProductsFound = []
     }
     
     @MainActor
@@ -53,21 +54,20 @@ final class HomeViewModel: ObservableObject{
     func showFoodPicker() {
         self.sholdShowAddSheet = false
         self.shouldShowPickProduct = true
-        lastProductsFound = []
+        self.lastProductsFound = []
     }
     
     @MainActor
     func searchFood(_ searchTerm: String) async {
-        if(searchTerm.count>=3){
-            lastProductsFound = []
+//        if(searchTerm.count>=3){
             self.shouldShowLoading = true
             do{
-                lastProductsFound =  try await repository.searchFood(searchTerm)
+                self.lastProductsFound =  try await repository.searchFood(searchTerm)
             }catch{
                 self.shouldShowAlert = true
             }
             self.shouldShowLoading = false
-        }
+//        }
     }
     
     @MainActor
@@ -75,6 +75,7 @@ final class HomeViewModel: ObservableObject{
         self.shouldShowPickProduct = false
         self.productToBeAdded =  food
         self.shouldShowQuantitySheet = true
+        self.lastProductsFound = []
     }
     
     @MainActor

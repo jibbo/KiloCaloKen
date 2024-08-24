@@ -152,7 +152,10 @@ struct SearchProductSheetView: View{
         }
         .frame(maxHeight: 300)
         Spacer()
-        TextField("Type here an EAN if scanning fails", text: $eanToSearch)
+        HStack{
+            Image(systemName: "magnifyingglass")
+            TextField("Type here an EAN if scanning fails", text: $eanToSearch)
+        }
         Spacer()
         HStack{
             Button("I don't have the EAN"){
@@ -243,25 +246,26 @@ struct PickProductSheetView: View{
     
     var body: some View {
         VStack{
-            TextField("Zucchini", text: $searchTerm)
-                .frame(minHeight: 100)
-                .focused($isFocused).onAppear{
-                    isFocused = true
-                }
-                .onChange(of: searchTerm){
-                    Task{
+            HStack{
+                Image(systemName: "magnifyingglass")
+                TextField("Zucchini", text: $searchTerm)
+                    .frame(minHeight: 100)
+                    .focused($isFocused).onAppear{
+                        isFocused = true
+                    }
+                    .task(id: searchTerm) {
                         await viewModel.searchFood(searchTerm)
                     }
-                }
+            }
             Spacer()
+            if(viewModel.shouldShowLoading){
+                ProgressView()
+            }
             List {
                 ForEach(viewModel.lastProductsFound, id: \.productName.hashValue){food in
                     Text(food.productName).onTapGesture {
                         viewModel.foodSelected(food)
                     }
-                }
-                if(viewModel.shouldShowLoading){
-                    ProgressView()
                 }
             }
             .listStyle(.plain)
