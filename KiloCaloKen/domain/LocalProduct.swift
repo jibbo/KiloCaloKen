@@ -35,7 +35,7 @@ class LocalProduct: Codable {
     
     init(from: Product, quantity: Double = 100.0, dateAdded: Date = Date.now){
         self.id = dateAdded.hashValue
-        self.productName = "\(from.brands) - \(from.productName)"
+        self.productName = "\(from.brands ?? "") - \(from.productName)"
         self.imageThumbUrl = from.imageFrontUrl
         self.dateAdded = dateAdded
         self.carbohydrates100G = from.nutriments.carbohydrates100G!

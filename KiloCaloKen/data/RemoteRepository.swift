@@ -22,8 +22,16 @@ final class RemoteRepository: FoodRepository {
     
     func searchFood(_ productName: String) async throws -> [LocalProduct] {
         let productSearch = try await foodService.searchProduct(productName)
-        return productSearch.map {
-            LocalProduct.init(from: $0)
+        guard productSearch.isEmpty else {
+            return productSearch.map {
+                LocalProduct.init(from: $0)
+            }
         }
+        
+        // TODO json is shitty, need to fix decoding
+        let bigSearch = try await foodService.bigSearchProduct(productName)
+        return bigSearch.products?.map{
+            LocalProduct.init(from: $0)
+        } ?? []
     }
 }

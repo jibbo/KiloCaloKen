@@ -37,11 +37,11 @@ final class HomeViewModel: ObservableObject{
     
     @MainActor
     func scanEan(_ ean: String) async {
-        self.sholdShowAddSheet = false
         self.shouldShowAlert = false
         self.shouldShowLoading = true
         do{
             productToBeAdded =  try await repository.scanEan(ean)
+            self.sholdShowAddSheet = false
             self.shouldShowQuantitySheet = true
             self.shouldShowLoading = false
         }catch{

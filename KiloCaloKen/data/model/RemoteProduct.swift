@@ -5,6 +5,15 @@
 
 import Foundation
 
+//MARK: - RemoteBigSearch
+struct RemoteBigSearch: Codable {
+    let products: [Product]?
+    
+    enum CodingKeys: String, CodingKey {
+        case products
+    }
+}
+
 // MARK: - RemoteProduct
 struct RemoteProduct: Codable {
     let code: String
@@ -22,7 +31,7 @@ struct RemoteProduct: Codable {
 struct Product: Codable {
     let nutriments: Nutriments
     let productName: String
-    let brands: String
+    let brands: String?
     let imageFrontUrl: String?
 
     enum CodingKeys: String, CodingKey {
@@ -41,14 +50,12 @@ struct Nutriments: Codable {
     let energyKcalUnit: String?
     let energyKcalValue: Int?
     let energyKcalValueComputed: Double?
-    let energy100G: Int?
+    let energy100G: Double?
     let energyUnit: String?
-    let energyValue: Int?
+    let energyValue: Double?
     let fat, fat100G: Double?
     let fatUnit: String?
     let fatValue: Double?
-    let fruitsVegetablesLegumesEstimateFromIngredients100G, fruitsVegetablesLegumesEstimateFromIngredientsServing: Int?
-    let fruitsVegetablesNutsEstimateFromIngredients100G, fruitsVegetablesNutsEstimateFromIngredientsServing: Double?
     let novaGroup, novaGroup100G, novaGroupServing, nutritionScoreFr: Int?
     let nutritionScoreFr100G: Int?
     let proteins, proteins100G: Double?
@@ -81,10 +88,6 @@ struct Nutriments: Codable {
         case fat100G = "fat_100g"
         case fatUnit = "fat_unit"
         case fatValue = "fat_value"
-        case fruitsVegetablesLegumesEstimateFromIngredients100G = "fruits-vegetables-legumes-estimate-from-ingredients_100g"
-        case fruitsVegetablesLegumesEstimateFromIngredientsServing = "fruits-vegetables-legumes-estimate-from-ingredients_serving"
-        case fruitsVegetablesNutsEstimateFromIngredients100G = "fruits-vegetables-nuts-estimate-from-ingredients_100g"
-        case fruitsVegetablesNutsEstimateFromIngredientsServing = "fruits-vegetables-nuts-estimate-from-ingredients_serving"
         case novaGroup = "nova-group"
         case novaGroup100G = "nova-group_100g"
         case novaGroupServing = "nova-group_serving"

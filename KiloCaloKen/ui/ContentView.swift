@@ -9,31 +9,60 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var viewModel: HomeViewModel
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
     
     var body: some View {
         NavigationStack {
-            VStack {
-                DaysList()
-                GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
-                    Text(String(format: "%.2f", viewModel.totalKcal))
+            if(horizontalSizeClass == .compact && dynamicTypeSize <= .large){
+                VStack {
+                    DaysList()
+                    GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
+                        Text(String(format: "%.2f", viewModel.totalKcal))
+                    }
+                    MacroNutrientsSummaryView()
+                    FoodList(viewModel)
+                    Button {
+                        viewModel.showAddSheet()
+                    } label: {
+                        Image(systemName: "plus")
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(Circle().fill(Color.accentColor))
+                    }
                 }
-                MacroNutrientsSummaryView()
-                FoodList(viewModel)
-                Button {
-                    viewModel.showAddSheet()
-                } label: {
-                    Image(systemName: "plus")
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Circle().fill(Color.accentColor))
+                .padding()
+                .navigationTitle("KiloCaloKen")
+                
+                if(viewModel.shouldShowLoading){
+                    ProgressView()
                 }
             }
-            .padding()
-            .navigationTitle("KiloCaloKen")
-            
-            if(viewModel.shouldShowLoading){
-                ProgressView()
+            else {
+                HStack{
+                    VStack{
+                        DaysList()
+                        GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
+                            Text(String(format: "%.2f", viewModel.totalKcal))
+                        }
+                        MacroNutrientsSummaryView()
+                        if(viewModel.shouldShowLoading){
+                            ProgressView()
+                        }
+                    }.padding()
+                    FoodList(viewModel)
+                    Button {
+                        viewModel.showAddSheet()
+                    } label: {
+                        Image(systemName: "plus")
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(Circle().fill(Color.accentColor))
+                    }
+                }
+                .padding()
             }
         }
         .sheet(isPresented: $viewModel.sholdShowAddSheet, content: {

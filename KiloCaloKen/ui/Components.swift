@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 import SwiftData
 import CodeScanner
+import VisionKit
+
 
 struct DaysList: View {
     @EnvironmentObject private var viewModel: HomeViewModel
@@ -127,39 +129,49 @@ struct SearchProductSheetView: View{
     @EnvironmentObject private var viewModel: HomeViewModel
     @State private var eanToSearch: String = ""
     
-    var body: some View {VStack{
-        CodeScannerView(codeTypes: [.ean13, .ean8], showViewfinder: true) { response in
-            switch response {
-            case .success(let result):
-                Task{
-                    await viewModel.scanEan(result.string)
+    var scannerAvailable: Bool {
+            DataScannerViewController.isSupported &&
+            DataScannerViewController.isAvailable
+        }
+    
+    var body: some View {
+        VStack{
+            CodeScannerView(codeTypes: [.ean13, .ean8, .code128], showViewfinder: true) { response in
+                switch response {
+                case .success(let result):
+                    eanToSearch = result.string
+                    Task{
+                        await viewModel.scanEan(result.string)
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
             }
-        }
-        .frame(maxHeight: 300)
-        Spacer()
-        HStack{
-            Image(systemName: "magnifyingglass")
-            TextField("Type here an EAN if scanning fails", text: $eanToSearch)
-        }
-        Spacer()
-        HStack{
-            Button("I don't have the EAN"){
-                viewModel.sholdShowAddSheet = false
-                viewModel.shouldShowPickProduct = true
+            .frame(maxHeight: 300)
+            Spacer()
+            HStack{
+                Image(systemName: "magnifyingglass")
+                TextField("Type here an EAN if scanning fails", text: $eanToSearch)
             }
             Spacer()
-            Button("Search"){
-                Task{
-                    await viewModel.scanEan(eanToSearch)
+            if(viewModel.shouldShowLoading){
+                ProgressView()
+            }
+            HStack{
+                Button("I don't have the EAN"){
+                    viewModel.sholdShowAddSheet = false
+                    viewModel.shouldShowPickProduct = true
+                }
+                Spacer()
+                Button("Search"){
+                    Task{
+                        await viewModel.scanEan(eanToSearch)
+                    }
                 }
             }
+            
         }
-        
-    }
-    .padding()
+        .padding()
     }
 }
 
@@ -187,6 +199,9 @@ struct QuantitySheetView: View{
                     placeholder: {
                         ProgressView()
                     })
+            }
+            GroupBox(label: Label("Kcal", systemImage: "flame")) {
+                getFormattedMacro(macro: viewModel.productToBeAdded?.carbohydrates100G)
             }
             HStack{
                 GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
