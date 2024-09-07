@@ -16,7 +16,7 @@ struct DaysList: View {
     @EnvironmentObject private var viewModel: HomeViewModel
     @State private var pastDays: [Date] = []
     
-    private let howManyDaysPast = 1
+    private let howManyDaysPast = 5
     private let monthFormatter = DateFormatter()
     private let dayFormatter = DateFormatter()
     
@@ -127,12 +127,13 @@ struct FoodList: View{
 }
 
 struct RecentFoodList: View{
-    private var viewModel: HomeViewModel
-    @Query private var recentFoods: [LocalProduct]
+    @Environment(\.modelContext) private var modelContext: ModelContext
     @State private var uniqueFoods: [LocalProduct] = []
     
     private var descriptor: FetchDescriptor<LocalProduct>
+    @State private var recentFoods: [LocalProduct] = []
     
+    private var viewModel: HomeViewModel
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
         let calendar = Calendar.current
@@ -160,6 +161,11 @@ struct RecentFoodList: View{
         .listStyle(.plain)
         .background()
         .onAppear{
+            do{
+                recentFoods = try modelContext.fetch(descriptor)
+            }catch {
+                recentFoods = []
+            }
             recentFoods.forEach{
                 let it = $0
                 if(!uniqueFoods.contains(it)){
