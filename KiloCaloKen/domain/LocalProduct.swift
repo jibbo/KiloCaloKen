@@ -10,7 +10,7 @@ import SwiftData
 
 // TODO: this isn't a domain because it is using swiftdata
 @Model
-class LocalProduct: Codable {
+class LocalProduct: Codable, Equatable {
     let id: Int?
     let productName: String
     let imageThumbUrl: String?
@@ -105,5 +105,9 @@ class LocalProduct: Codable {
         try container.encode(self.imageThumbUrl, forKey: .imageThumbUrl)
         try container.encode(self.dateAdded, forKey: .dateAdded)
         try container.encode(self.quantity, forKey: .quantity)
+    }
+    
+    static func ==(lhs: LocalProduct, rhs: LocalProduct) -> Bool {
+        return lhs.id == rhs.id || lhs.productName == rhs.productName
     }
 }

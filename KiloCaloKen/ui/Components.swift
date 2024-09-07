@@ -14,8 +14,9 @@ import VisionKit
 
 struct DaysList: View {
     @EnvironmentObject private var viewModel: HomeViewModel
-    @State private var last30Days: [Date] = []
+    @State private var pastDays: [Date] = []
     
+    private let howManyDaysPast = 5
     private let monthFormatter = DateFormatter()
     private let dayFormatter = DateFormatter()
     
@@ -31,7 +32,7 @@ struct DaysList: View {
     var body: some View{
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ForEach(last30Days, id: \.timeIntervalSince1970) { item in
+                ForEach(pastDays, id: \.timeIntervalSince1970) { item in
                     let fillColor: Color = isSelectedDay(item) ? Color.accentColor.opacity(0.25) : Color.gray.opacity(0.2)
                     VStack {
                         Text(monthFormatter.string(from: item)).bold()
@@ -49,10 +50,10 @@ struct DaysList: View {
                 .listStyle(.plain)
             }
             .onAppear{
-                for i in 0...30 {
-                    last30Days.append(Calendar.current.date(byAdding: .day, value: -i, to: Date())!)
+                for i in 0...howManyDaysPast {
+                    pastDays.append(Calendar.current.date(byAdding: .day, value: -i, to: Date())!)
                 }
-                viewModel.selectedDay = last30Days[0]
+                viewModel.selectedDay = pastDays[0]
             }
         }
     }
@@ -125,17 +126,72 @@ struct FoodList: View{
     }
 }
 
+struct RecentFoodList: View{
+    private var viewModel: HomeViewModel
+    @Query private var recentFoods: [LocalProduct]
+    @State private var uniqueFoods: [LocalProduct] = []
+    
+    init(_ viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: viewModel.selectedDay)
+        
+        _recentFoods = Query(
+            filter: #Predicate<LocalProduct> {
+                $0.dateAdded < startOfDay
+            },
+            sort: \LocalProduct.dateAdded
+        )
+    }
+    
+    var body: some View {
+        List {
+            ForEach(uniqueFoods, id: \.self){food in
+                Button (action: {
+                    viewModel.foodSelected(food)
+                }){
+                    Text(food.productName)
+                }.buttonStyle(.plain)
+            }
+        }
+        .listStyle(.plain)
+        .background()
+        .onAppear{
+            recentFoods.forEach{
+                let it = $0
+                if(!uniqueFoods.contains(it)){
+                    uniqueFoods.append(it)
+                }
+            }
+        }
+    }
+}
+
 struct SearchProductSheetView: View{
     @EnvironmentObject private var viewModel: HomeViewModel
     @State private var eanToSearch: String = ""
     
     var scannerAvailable: Bool {
-            DataScannerViewController.isSupported &&
-            DataScannerViewController.isAvailable
-        }
+        DataScannerViewController.isSupported &&
+        DataScannerViewController.isAvailable
+    }
     
     var body: some View {
         VStack{
+            HStack{
+                Image(systemName: "magnifyingglass")
+                TextField("Type here an EAN if scanning fails", text: $eanToSearch)
+                Spacer()
+                if(viewModel.shouldShowLoading){
+                    ProgressView()
+                }
+                Button("Search"){
+                    Task{
+                        await viewModel.scanEan(eanToSearch)
+                    }
+                }
+            }.background().clipShape(RoundedRectangle(cornerRadius:20))
+            Spacer()
             CodeScannerView(codeTypes: [.ean13, .ean8, .code128], showViewfinder: true) { response in
                 switch response {
                 case .success(let result):
@@ -148,31 +204,26 @@ struct SearchProductSheetView: View{
                 }
             }
             .frame(maxHeight: 300)
+            RecentFoodList(viewModel)
             Spacer()
             HStack{
-                Image(systemName: "magnifyingglass")
-                TextField("Type here an EAN if scanning fails", text: $eanToSearch)
-            }
-            Spacer()
-            if(viewModel.shouldShowLoading){
-                ProgressView()
-            }
-            HStack{
+                Spacer()
                 Button("I don't have the EAN"){
                     viewModel.sholdShowAddSheet = false
                     viewModel.shouldShowPickProduct = true
-                }
-                Spacer()
-                Button("Search"){
-                    Task{
-                        await viewModel.scanEan(eanToSearch)
-                    }
                 }
             }
             
         }
         .padding()
     }
+}
+
+#Preview {
+    SearchProductSheetView()
+        .environmentObject(
+            HomeViewModel(modelContext: nil)
+        )
 }
 
 struct QuantitySheetView: View{

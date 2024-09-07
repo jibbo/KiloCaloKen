@@ -7,7 +7,6 @@
 
 import Foundation
 
-// TODO: replace with AlamoFire
 final class OpenFoodFactApiService {
     let apiUrl = "https://it.openfoodfacts.net/api/v3/"
     

@@ -74,6 +74,8 @@ final class HomeViewModel: ObservableObject{
     
     @MainActor
     func foodSelected(_ food: LocalProduct) {
+        self.sholdShowAddSheet = false
+        self.shouldShowLoading = false
         self.shouldShowPickProduct = false
         self.productToBeAdded =  food
         self.shouldShowQuantitySheet = true
