@@ -13,12 +13,28 @@ struct ContentView: View {
     @EnvironmentObject private var viewModel: HomeViewModel
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
+    private let monthFormatter = DateFormatter()
+    private let dayFormatter = DateFormatter()
+    
+    init(){
+        self.monthFormatter.dateFormat = "MMM"
+        self.dayFormatter.dateFormat = "dd"
+    }
+    
     
     var body: some View {
         NavigationStack {
             if(horizontalSizeClass == .compact && dynamicTypeSize <= .large){
                 VStack {
-                    DaysList()
+                    HStack{
+                        Text("KiloKen").font(.largeTitle.bold())
+                        Spacer()
+                        DatePicker(
+                            selection: $viewModel.selectedDay,
+                            displayedComponents: [.date],
+                            label: {  }
+                        )
+                    }
                     GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
                         Text(String(format: "%.2f", viewModel.totalKcal))
                     }
@@ -34,7 +50,6 @@ struct ContentView: View {
                     }
                 }
                 .padding()
-                .navigationTitle("KiloCaloKen")
                 
                 if(viewModel.shouldShowLoading){
                     ProgressView()
@@ -43,7 +58,6 @@ struct ContentView: View {
             else {
                 HStack{
                     VStack{
-                        DaysList()
                         GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
                             Text(String(format: "%.2f", viewModel.totalKcal))
                         }
@@ -52,6 +66,14 @@ struct ContentView: View {
                             ProgressView()
                         }
                     }.padding()
+                        .navigationTitle("KiloCaloKen")
+                        .toolbar{
+                            ToolbarItem(placement: .topBarTrailing){
+                                Button(action: {}){
+                                    Text("puppa")
+                                }
+                            }
+                        }
                     FoodList(viewModel)
                     Button {
                         viewModel.showAddSheet()

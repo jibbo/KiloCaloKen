@@ -10,7 +10,6 @@
 		4A64AABD2C6775BA00995252 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 4A64AABC2C6775BA00995252 /* CodeScanner */; };
 		4A64AABF2C67B0AA00995252 /* LocalProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A64AABE2C67B0AA00995252 /* LocalProduct.swift */; };
 		4A64AAC22C67EAE500995252 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A64AAC12C67EAE500995252 /* Components.swift */; };
-		4A7EA21A2C8CA06D00678FF4 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7EA2192C8CA06D00678FF4 /* Extensions.swift */; };
 		4A81C12C2C72409D00E3E671 /* RemoteSearchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A81C12B2C72409D00E3E671 /* RemoteSearchItem.swift */; };
 		4AAB0CE52C641AA200B45518 /* KiloCaloKenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0CE42C641AA200B45518 /* KiloCaloKenApp.swift */; };
 		4AAB0CE72C641AA200B45518 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAB0CE62C641AA200B45518 /* ContentView.swift */; };
@@ -47,7 +46,6 @@
 /* Begin PBXFileReference section */
 		4A64AABE2C67B0AA00995252 /* LocalProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalProduct.swift; sourceTree = "<group>"; };
 		4A64AAC12C67EAE500995252 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
-		4A7EA2192C8CA06D00678FF4 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4A81C12B2C72409D00E3E671 /* RemoteSearchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSearchItem.swift; sourceTree = "<group>"; };
 		4AAB0CE12C641AA200B45518 /* KiloCaloKen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KiloCaloKen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AAB0CE42C641AA200B45518 /* KiloCaloKenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiloCaloKenApp.swift; sourceTree = "<group>"; };
@@ -104,14 +102,6 @@
 			path = ui;
 			sourceTree = "<group>";
 		};
-		4A7EA2182C8C9FFF00678FF4 /* core */ = {
-			isa = PBXGroup;
-			children = (
-				4A7EA2192C8CA06D00678FF4 /* Extensions.swift */,
-			);
-			path = core;
-			sourceTree = "<group>";
-		};
 		4AAB0CD82C641AA200B45518 = {
 			isa = PBXGroup;
 			children = (
@@ -135,7 +125,6 @@
 		4AAB0CE32C641AA200B45518 /* KiloCaloKen */ = {
 			isa = PBXGroup;
 			children = (
-				4A7EA2182C8C9FFF00678FF4 /* core */,
 				4A64AAC02C67E8A900995252 /* ui */,
 				4AAB0D142C64A36600B45518 /* domain */,
 				4AAB0D102C64A18700B45518 /* data */,
@@ -342,7 +331,6 @@
 				4AAB0D0F2C64251F00B45518 /* HomeViewModel.swift in Sources */,
 				4AAB0CE52C641AA200B45518 /* KiloCaloKenApp.swift in Sources */,
 				4AAB0D132C64A1BC00B45518 /* RemoteProduct.swift in Sources */,
-				4A7EA21A2C8CA06D00678FF4 /* Extensions.swift in Sources */,
 				4AB41FA62C8BC2E000B5F156 /* BarcodeScannerView.swift in Sources */,
 				4A64AAC22C67EAE500995252 /* Components.swift in Sources */,
 				4AAB0D162C64A38300B45518 /* FoodRepository.swift in Sources */,
