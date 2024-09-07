@@ -16,7 +16,7 @@ struct DaysList: View {
     @EnvironmentObject private var viewModel: HomeViewModel
     @State private var pastDays: [Date] = []
     
-    private let howManyDaysPast = 5
+    private let howManyDaysPast = 1
     private let monthFormatter = DateFormatter()
     private let dayFormatter = DateFormatter()
     
@@ -131,17 +131,20 @@ struct RecentFoodList: View{
     @Query private var recentFoods: [LocalProduct]
     @State private var uniqueFoods: [LocalProduct] = []
     
+    private var descriptor: FetchDescriptor<LocalProduct>
+    
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
         let calendar = Calendar.current
-        let startOfDay = calendar.startOfDay(for: viewModel.selectedDay)
+        let startOfDay = calendar.startOfDay(for: Date())
         
-        _recentFoods = Query(
-            filter: #Predicate<LocalProduct> {
+        self.descriptor = FetchDescriptor(
+            predicate: #Predicate<LocalProduct> {
                 $0.dateAdded < startOfDay
             },
-            sort: \LocalProduct.dateAdded
+            sortBy: [SortDescriptor(\LocalProduct.dateAdded)]
         )
+        descriptor.fetchLimit = 20
     }
     
     var body: some View {
