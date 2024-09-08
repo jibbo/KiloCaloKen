@@ -117,7 +117,6 @@ struct FoodList: View{
             }
         }
         .onAppear(perform: {
-            print(todayFoods)
             viewModel.updateFoods(todayFoods)
         })
         .onChange(of: todayFoods){
@@ -198,6 +197,7 @@ struct SearchProductSheetView: View{
                     }
                 }
             }
+            .padding()
             Spacer()
             CodeScannerView(codeTypes: [.ean13, .ean8, .code128], showViewfinder: true) { response in
                 switch response {

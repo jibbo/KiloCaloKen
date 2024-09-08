@@ -44,6 +44,7 @@ struct ContentView: View {
                     .padding()
                     .foregroundColor(.white)
                     .background(Circle().fill(Color.accentColor))
+                    .imageScale(.large)
             }
         }
     }
