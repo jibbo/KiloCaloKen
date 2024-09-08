@@ -117,6 +117,7 @@ struct FoodList: View{
             }
         }
         .onAppear(perform: {
+            print(todayFoods)
             viewModel.updateFoods(todayFoods)
         })
         .onChange(of: todayFoods){
@@ -140,9 +141,6 @@ struct RecentFoodList: View{
         let startOfDay = calendar.startOfDay(for: Date())
         
         self.descriptor = FetchDescriptor(
-            predicate: #Predicate<LocalProduct> {
-                $0.dateAdded < startOfDay
-            },
             sortBy: [SortDescriptor(\LocalProduct.dateAdded)]
         )
         descriptor.fetchLimit = 20
@@ -199,7 +197,7 @@ struct SearchProductSheetView: View{
                         await viewModel.scanEan(eanToSearch)
                     }
                 }
-            }.background().clipShape(RoundedRectangle(cornerRadius:20))
+            }
             Spacer()
             CodeScannerView(codeTypes: [.ean13, .ean8, .code128], showViewfinder: true) { response in
                 switch response {
@@ -316,9 +314,11 @@ struct PickProductSheetView: View{
             }
             List {
                 ForEach(viewModel.lastProductsFound, id: \.productName.hashValue){food in
-                    Text(food.productName).onTapGesture {
+                    Button(action: {
                         viewModel.foodSelected(food)
-                    }
+                    }){
+                        Text(food.productName)
+                    }.buttonStyle(.plain)
                 }
             }
             .listStyle(.plain)

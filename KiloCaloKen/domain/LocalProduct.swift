@@ -34,7 +34,7 @@ class LocalProduct: Codable, Equatable {
     }
     
     init(from: Product, quantity: Double = 100.0, dateAdded: Date = Date.now){
-        self.id = dateAdded.hashValue
+        self.id = dateAdded.timeIntervalSince1970.hashValue
         self.productName = "\(from.brands ?? "") - \(from.productName)"
         self.imageThumbUrl = from.imageFrontUrl
         self.dateAdded = dateAdded
@@ -46,7 +46,7 @@ class LocalProduct: Codable, Equatable {
     }
     
     init(from: RemoteSearchItem, quantity: Double = 100.0, dateAdded: Date = Date.now){
-        self.id = dateAdded.hashValue
+        self.id = dateAdded.timeIntervalSince1970.hashValue
         self.productName = from.name
         self.imageThumbUrl = nil
         self.dateAdded = dateAdded
@@ -58,7 +58,7 @@ class LocalProduct: Codable, Equatable {
     }
     
     init(from: LocalProduct, quantity: Double = 100.0, dateAdded: Date = Date.now){
-        self.id = dateAdded.hashValue
+        self.id = dateAdded.timeIntervalSince1970.hashValue
         self.productName = from.productName
         self.imageThumbUrl = from.imageThumbUrl
         self.dateAdded = dateAdded

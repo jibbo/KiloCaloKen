@@ -21,7 +21,7 @@ final class HomeViewModel: ObservableObject{
     @Published var shouldShowPickProduct = false
     @Published var productToBeAdded: LocalProduct? = nil
     @Published var lastProductsFound: [LocalProduct] = []
-    @Published var selectedDay: Date = Date()
+    @Published var selectedDay: Date = Date.now
     
     private let repository: FoodRepository = RemoteRepository()
     private var modelContext: ModelContext?
@@ -96,6 +96,7 @@ final class HomeViewModel: ObservableObject{
         updateFoods([localFood])
         self.shouldShowQuantitySheet = false
         self.shouldShowLoading = false
+        self.productToBeAdded = nil
     }
     
     func deleteFood(food: LocalProduct){

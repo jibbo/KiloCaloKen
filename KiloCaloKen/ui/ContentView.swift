@@ -10,8 +10,8 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @EnvironmentObject private var viewModel: HomeViewModel
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     private let monthFormatter = DateFormatter()
     private let dayFormatter = DateFormatter()
@@ -22,67 +22,54 @@ struct ContentView: View {
     }
     
     
+    fileprivate func Header() -> HStack<TupleView<(Text, Spacer, DatePicker<EmptyView>)>> {
+        return HStack{
+            Text("KiloKen").font(.largeTitle.bold())
+            Spacer()
+            DatePicker(
+                selection: $viewModel.selectedDay,
+                displayedComponents: [.date],
+                label: {  }
+            )
+        }
+    }
+    
+    fileprivate func FoodSection() -> ZStack<TupleView<(FoodList, Button<some View>)>> {
+        return ZStack(alignment: .bottomTrailing){
+            FoodList(viewModel)
+            Button {
+                viewModel.showAddSheet()
+            } label: {
+                Image(systemName: "plus")
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(Circle().fill(Color.accentColor))
+            }
+        }
+    }
+    
     var body: some View {
         NavigationStack {
-            if(horizontalSizeClass == .compact && dynamicTypeSize <= .large){
+            if(horizontalSizeClass == .compact && verticalSizeClass == .regular){
                 VStack {
-                    HStack{
-                        Text("KiloKen").font(.largeTitle.bold())
-                        Spacer()
-                        DatePicker(
-                            selection: $viewModel.selectedDay,
-                            displayedComponents: [.date],
-                            label: {  }
-                        )
-                    }
+                    Header()
                     GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
                         Text(String(format: "%.2f", viewModel.totalKcal))
                     }
                     MacroNutrientsSummaryView()
-                    FoodList(viewModel)
-                    Button {
-                        viewModel.showAddSheet()
-                    } label: {
-                        Image(systemName: "plus")
-                            .padding()
-                            .foregroundColor(.white)
-                            .background(Circle().fill(Color.accentColor))
-                    }
-                }
-                .padding()
-                
-                if(viewModel.shouldShowLoading){
-                    ProgressView()
-                }
+                    FoodSection()
+                }.padding()
             }
             else {
                 HStack{
                     VStack{
+                        Header()
                         GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
                             Text(String(format: "%.2f", viewModel.totalKcal))
                         }
                         MacroNutrientsSummaryView()
-                        if(viewModel.shouldShowLoading){
-                            ProgressView()
-                        }
-                    }.padding()
-                        .navigationTitle("KiloCaloKen")
-                        .toolbar{
-                            ToolbarItem(placement: .topBarTrailing){
-                                Button(action: {}){
-                                    Text("puppa")
-                                }
-                            }
-                        }
-                    FoodList(viewModel)
-                    Button {
-                        viewModel.showAddSheet()
-                    } label: {
-                        Image(systemName: "plus")
-                            .padding()
-                            .foregroundColor(.white)
-                            .background(Circle().fill(Color.accentColor))
                     }
+                    FoodSection()
                 }
                 .padding()
             }
