@@ -33,17 +33,17 @@ struct MacroNutrientsSummaryView: View{
     var body: some View{
         VStack{
             GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
-                Text(String(format: "%.2f", viewModel.totalKcal))
+                Text(viewModel.totalKcal.formatted())
             }
             HStack{
                 GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
-                    Text(String(format: "%.2f", viewModel.cho))
+                    Text(viewModel.cho.formatted())
                 }
                 GroupBox(label: Label("PRO", systemImage: "dumbbell")) {
-                    Text(String(format: "%.2f", viewModel.pro))
+                    Text(viewModel.pro.formatted())
                 }
                 GroupBox(label: Label("FAT", systemImage: "birthday.cake")) {
-                    Text(String(format: "%.2f", viewModel.fat))
+                    Text(viewModel.fat.formatted())
                 }
             }
         }

@@ -10,10 +10,10 @@ import SwiftData
 
 
 final class HomeViewModel: ObservableObject{
-    @Published var totalKcal: Double = 0.0
-    @Published var cho: Double = 0.0
-    @Published var pro: Double = 0.0
-    @Published var fat: Double = 0.0
+    @Published var totalKcal: Int = 0
+    @Published var cho: Int = 0
+    @Published var pro: Int = 0
+    @Published var fat: Int = 0
     @Published var shouldShowAlert = false
     @Published var shouldShowLoading = false
     @Published var sholdShowSearchProductSheet = false
@@ -106,24 +106,24 @@ final class HomeViewModel: ObservableObject{
     func updateFoods(_ foods: [LocalProduct]){
         resetMacros()
         for food in foods {
-            totalKcal+=Double(food.energyKcal100G) * (food.quantity/100.0)
-            cho+=(food.carbohydrates100G) * (food.quantity/100.0)
-            pro+=(food.proteins100G) * (food.quantity/100.0)
-            fat+=(food.fat100G)  * (food.quantity/100.0)
+            totalKcal+=Int(food.energyKcal100G * (food.quantity/100))
+            cho+=Int((food.carbohydrates100G) * (food.quantity/100))
+            pro+=Int((food.proteins100G) * (food.quantity/100))
+            fat+=Int((food.fat100G)  * (food.quantity/100))
         }
     }
     
     func removeFood(_ food: LocalProduct){
-        totalKcal-=Double(food.energyKcal100G) * (food.quantity/100.0)
-        cho-=(food.carbohydrates100G) * (food.quantity/100.0)
-        pro-=(food.proteins100G) * (food.quantity/100.0)
-        fat-=(food.fat100G)  * (food.quantity/100.0)
+        totalKcal-=Int(food.energyKcal100G * (food.quantity/100))
+        cho-=Int((food.carbohydrates100G) * (food.quantity/100))
+        pro-=Int((food.proteins100G) * (food.quantity/100))
+        fat-=Int((food.fat100G)  * (food.quantity/100))
     }
     
     private func resetMacros(){
-        totalKcal = 0.0
-        cho = 0.0
-        pro = 0.0
-        fat = 0.0
+        totalKcal = 0
+        cho = 0
+        pro = 0
+        fat = 0
     }
 }
