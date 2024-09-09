@@ -16,9 +16,10 @@ final class HomeViewModel: ObservableObject{
     @Published var fat: Double = 0.0
     @Published var shouldShowAlert = false
     @Published var shouldShowLoading = false
-    @Published var sholdShowAddSheet = false
+    @Published var sholdShowSearchProductSheet = false
     @Published var shouldShowQuantitySheet = false
     @Published var shouldShowPickProduct = false
+    @Published var shouldShowDateSheet = false
     @Published var productToBeAdded: LocalProduct? = nil
     @Published var lastProductsFound: [LocalProduct] = []
     @Published var selectedDay: Date = Date.now
@@ -31,7 +32,7 @@ final class HomeViewModel: ObservableObject{
     }
     
     func showAddSheet(){
-        self.sholdShowAddSheet = true
+        self.sholdShowSearchProductSheet = true
         self.lastProductsFound = []
     }
     
@@ -41,7 +42,7 @@ final class HomeViewModel: ObservableObject{
         self.shouldShowLoading = true
         do{
             productToBeAdded =  try await repository.scanEan(ean)
-            self.sholdShowAddSheet = false
+            self.sholdShowSearchProductSheet = false
             self.shouldShowQuantitySheet = true
             self.shouldShowLoading = false
         }catch{
@@ -52,7 +53,7 @@ final class HomeViewModel: ObservableObject{
     
     @MainActor
     func showFoodPicker() {
-        self.sholdShowAddSheet = false
+        self.sholdShowSearchProductSheet = false
         self.shouldShowPickProduct = true
         self.lastProductsFound = []
     }
@@ -74,7 +75,7 @@ final class HomeViewModel: ObservableObject{
     
     @MainActor
     func foodSelected(_ food: LocalProduct) {
-        self.sholdShowAddSheet = false
+        self.sholdShowSearchProductSheet = false
         self.shouldShowLoading = false
         self.shouldShowPickProduct = false
         self.productToBeAdded =  food

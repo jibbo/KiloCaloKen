@@ -13,50 +13,11 @@ struct ContentView: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @EnvironmentObject private var viewModel: HomeViewModel
     
-    private let monthFormatter = DateFormatter()
-    private let dayFormatter = DateFormatter()
-    
-    init(){
-        self.monthFormatter.dateFormat = "MMM"
-        self.dayFormatter.dateFormat = "dd"
-    }
-    
-    
-    fileprivate func Header() -> HStack<TupleView<(Text, Spacer, DatePicker<EmptyView>)>> {
-        return HStack{
-            Text("KiloKen").font(.largeTitle.bold())
-            Spacer()
-            DatePicker(
-                selection: $viewModel.selectedDay,
-                displayedComponents: [.date],
-                label: {  }
-            )
-        }
-    }
-    
-    fileprivate func FoodSection() -> ZStack<TupleView<(FoodList, Button<some View>)>> {
-        return ZStack(alignment: .bottomTrailing){
-            FoodList(viewModel)
-            Button {
-                viewModel.showAddSheet()
-            } label: {
-                Image(systemName: "plus")
-                    .padding()
-                    .foregroundColor(.white)
-                    .background(Circle().fill(Color.accentColor))
-                    .imageScale(.large)
-            }
-        }
-    }
-    
     var body: some View {
         NavigationStack {
             if(horizontalSizeClass == .compact && verticalSizeClass == .regular){
                 VStack {
                     Header()
-                    GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
-                        Text(String(format: "%.2f", viewModel.totalKcal))
-                    }
                     MacroNutrientsSummaryView()
                     FoodSection()
                 }.padding()
@@ -65,9 +26,6 @@ struct ContentView: View {
                 HStack{
                     VStack{
                         Header()
-                        GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
-                            Text(String(format: "%.2f", viewModel.totalKcal))
-                        }
                         MacroNutrientsSummaryView()
                     }
                     FoodSection()
@@ -75,13 +33,19 @@ struct ContentView: View {
                 .padding()
             }
         }
-        .sheet(isPresented: $viewModel.sholdShowAddSheet, content: {
+        .sheet(isPresented: $viewModel.sholdShowSearchProductSheet, onDismiss: {
+            viewModel.sholdShowSearchProductSheet = false
+        }, content: {
             SearchProductSheetView()
         })
-        .sheet(isPresented: $viewModel.shouldShowQuantitySheet, content: {
+        .sheet(isPresented: $viewModel.shouldShowQuantitySheet,onDismiss: {
+            viewModel.shouldShowQuantitySheet = false
+        }, content: {
             QuantitySheetView()
         })
-        .sheet(isPresented: $viewModel.shouldShowPickProduct, content: {
+        .sheet(isPresented: $viewModel.shouldShowPickProduct,onDismiss: {
+            viewModel.shouldShowPickProduct = false
+        }, content: {
             PickProductSheetView()
         })
         .alert(isPresented: $viewModel.shouldShowAlert, content: {

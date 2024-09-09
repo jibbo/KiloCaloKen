@@ -11,50 +11,18 @@ import SwiftData
 import CodeScanner
 import VisionKit
 
-
-struct DaysList: View {
+struct Header: View {
     @EnvironmentObject private var viewModel: HomeViewModel
-    @State private var pastDays: [Date] = []
     
-    private let howManyDaysPast = 5
-    private let monthFormatter = DateFormatter()
-    private let dayFormatter = DateFormatter()
-    
-    init(){
-        self.monthFormatter.dateFormat = "MMM"
-        self.dayFormatter.dateFormat = "dd"
-    }
-    
-    fileprivate func isSelectedDay(_ item: Date) -> Bool {
-        return item.timeIntervalSince1970 == viewModel.selectedDay.timeIntervalSince1970
-    }
-    
-    var body: some View{
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(pastDays, id: \.timeIntervalSince1970) { item in
-                    let fillColor: Color = isSelectedDay(item) ? Color.accentColor.opacity(0.25) : Color.gray.opacity(0.2)
-                    VStack {
-                        Text(monthFormatter.string(from: item)).bold()
-                        Text(dayFormatter.string(from: item))
-                    }
-                    .padding()
-                    .background(
-                        Circle().fill(fillColor)
-                    )
-                    .onTapGesture {
-                        viewModel.selectedDay = item
-                    }
-                    
-                }
-                .listStyle(.plain)
-            }
-            .onAppear{
-                for i in 0...howManyDaysPast {
-                    pastDays.append(Calendar.current.date(byAdding: .day, value: -i, to: Date())!)
-                }
-                viewModel.selectedDay = pastDays[0]
-            }
+    var body: some View {
+        HStack{
+            Text("KiloKen").font(.largeTitle.bold())
+            Spacer()
+            DatePicker(
+                selection: $viewModel.selectedDay,
+                displayedComponents: [.date],
+                label: {  }
+            ).labelsHidden()
         }
     }
 }
@@ -63,16 +31,38 @@ struct MacroNutrientsSummaryView: View{
     @EnvironmentObject private var viewModel: HomeViewModel
     
     var body: some View{
-        HStack{
-            GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
-                Text(String(format: "%.2f", viewModel.cho))
+        VStack{
+            GroupBox(label: Label("Kcal Totali", systemImage: "flame")) {
+                Text(String(format: "%.2f", viewModel.totalKcal))
             }
-            GroupBox(label: Label("PRO", systemImage: "dumbbell")) {
-                Text(String(format: "%.2f", viewModel.pro))
+            HStack{
+                GroupBox(label: Label("CHO", systemImage: "fork.knife")) {
+                    Text(String(format: "%.2f", viewModel.cho))
+                }
+                GroupBox(label: Label("PRO", systemImage: "dumbbell")) {
+                    Text(String(format: "%.2f", viewModel.pro))
+                }
+                GroupBox(label: Label("FAT", systemImage: "birthday.cake")) {
+                    Text(String(format: "%.2f", viewModel.fat))
+                }
             }
-            GroupBox(label: Label("FAT", systemImage: "birthday.cake")) {
-                Text(String(format: "%.2f", viewModel.fat))
-            }
+        }
+    }
+}
+
+struct FoodSection: View {
+    @EnvironmentObject private var viewModel: HomeViewModel
+    
+    var body: some View {
+        FoodList(viewModel)
+        Button {
+            viewModel.showAddSheet()
+        } label: {
+            Image(systemName: "plus")
+                .padding()
+                .foregroundColor(.white)
+                .background(Circle().fill(Color.accentColor))
+                .imageScale(.large)
         }
     }
 }
@@ -213,7 +203,7 @@ struct SearchProductSheetView: View{
             HStack{
                 Spacer()
                 Button("I don't have the EAN"){
-                    viewModel.sholdShowAddSheet = false
+                    viewModel.sholdShowSearchProductSheet = false
                     viewModel.shouldShowPickProduct = true
                 }
             }
@@ -221,13 +211,6 @@ struct SearchProductSheetView: View{
         }
         .padding()
     }
-}
-
-#Preview {
-    SearchProductSheetView()
-        .environmentObject(
-            HomeViewModel(modelContext: nil)
-        )
 }
 
 struct QuantitySheetView: View{
@@ -331,3 +314,12 @@ struct PickProductSheetView: View{
         .padding()
     }
 }
+// NOTES kept only to remember custom backgrounds
+//            VStack {
+//                Text(monthFormatter.string(from: viewModel.selectedDay)).bold()
+//                Text(dayFormatter.string(from: viewModel.selectedDay))
+//            }
+//            .padding()
+//            .background(
+//                Circle().fill(Color.gray.opacity(0.2))
+//            )
