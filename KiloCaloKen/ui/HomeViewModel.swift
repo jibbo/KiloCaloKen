@@ -73,7 +73,6 @@ final class HomeViewModel: ObservableObject{
         }
     }
     
-    @MainActor
     func foodSelected(_ food: LocalProduct) {
         self.sholdShowSearchProductSheet = false
         self.shouldShowLoading = false
@@ -83,7 +82,6 @@ final class HomeViewModel: ObservableObject{
         self.lastProductsFound = []
     }
     
-    @MainActor
     func addFood(_ quantity: String) {
         guard self.productToBeAdded != nil else {
             return

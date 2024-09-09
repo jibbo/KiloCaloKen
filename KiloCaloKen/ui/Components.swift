@@ -54,15 +54,17 @@ struct FoodSection: View {
     @EnvironmentObject private var viewModel: HomeViewModel
     
     var body: some View {
-        FoodList(viewModel)
-        Button {
-            viewModel.showAddSheet()
-        } label: {
-            Image(systemName: "plus")
-                .padding()
-                .foregroundColor(.white)
-                .background(Circle().fill(Color.accentColor))
-                .imageScale(.large)
+        ZStack(alignment: .bottomTrailing){
+            FoodList(viewModel)
+            Button {
+                viewModel.showAddSheet()
+            } label: {
+                Image(systemName: "plus")
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(Circle().fill(Color.accentColor))
+                    .imageScale(.large)
+            }
         }
     }
 }
@@ -88,7 +90,11 @@ struct FoodList: View{
     var body: some View {
         List {
             ForEach(todayFoods, id: \.self){food in
-                Text(food.productName)
+                Button(action:{
+                    viewModel.foodSelected(food)
+                }){
+                    Text(food.productName)
+                }
             }
             .onDelete(perform: { indexSet in
                 for index in indexSet{
