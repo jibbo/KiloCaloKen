@@ -10,6 +10,7 @@ import SwiftUI
 import SwiftData
 import CodeScanner
 import VisionKit
+import Combine
 
 struct Header: View {
     @EnvironmentObject private var viewModel: HomeViewModel
@@ -279,19 +280,26 @@ struct QuantitySheetView: View{
 
 struct PickProductSheetView: View{
     @EnvironmentObject private var viewModel: HomeViewModel
-    @State private var searchTerm: String = ""
     @FocusState private var isFocused: Bool
     
     var body: some View {
         VStack{
             HStack{
                 Image(systemName: "magnifyingglass")
-                TextField("Zucchini", text: $searchTerm)
-                    .focused($isFocused).onAppear{
+                TextField("Zucchini", text: $viewModel.searchTerm)
+                    .focused($isFocused)
+                    .onAppear{
                         isFocused = true
                     }
-                    .task(id: searchTerm) {
-                        await viewModel.searchFood(searchTerm)
+                    .onReceive(
+                        viewModel.$searchTerm
+                            .debounce(for: .seconds(2), scheduler: DispatchQueue.main)
+                    ) {
+                        guard !$0.isEmpty else { return }
+                        let text = $0
+                        Task {
+                            await viewModel.searchFood(text)
+                        }
                     }
             }
             Spacer()

@@ -49,7 +49,7 @@ struct ContentView: View {
             PickProductSheetView()
         })
         .alert(isPresented: $viewModel.shouldShowAlert, content: {
-            Alert(title: Text("Couldn't find EAN"))
+            Alert(title: Text("Error in finding the food"))
         })
     }
 }

@@ -23,6 +23,7 @@ final class HomeViewModel: ObservableObject{
     @Published var productToBeAdded: LocalProduct? = nil
     @Published var lastProductsFound: [LocalProduct] = []
     @Published var selectedDay: Date = Date.now
+    @Published var searchTerm: String = ""
     
     private let repository: FoodRepository = RemoteRepository()
     private var modelContext: ModelContext?
@@ -66,6 +67,8 @@ final class HomeViewModel: ObservableObject{
                 self.lastProductsFound =  try await repository.searchFood(searchTerm)
                 self.shouldShowLoading = false
             } catch {
+                self.shouldShowPickProduct = false
+                self.shouldShowLoading = false
                 self.shouldShowAlert = true
             }
         } else {
