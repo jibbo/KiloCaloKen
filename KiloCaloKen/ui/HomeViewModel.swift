@@ -104,14 +104,8 @@ final class HomeViewModel: ObservableObject{
         removeFood(food)
     }
     
-    func resetMacros(){
-        totalKcal = 0.0
-        cho = 0.0
-        pro = 0.0
-        fat = 0.0
-    }
-    
     func updateFoods(_ foods: [LocalProduct]){
+        resetMacros()
         for food in foods {
             totalKcal+=Double(food.energyKcal100G) * (food.quantity/100.0)
             cho+=(food.carbohydrates100G) * (food.quantity/100.0)
@@ -125,5 +119,12 @@ final class HomeViewModel: ObservableObject{
         cho-=(food.carbohydrates100G) * (food.quantity/100.0)
         pro-=(food.proteins100G) * (food.quantity/100.0)
         fat-=(food.fat100G)  * (food.quantity/100.0)
+    }
+    
+    private func resetMacros(){
+        totalKcal = 0.0
+        cho = 0.0
+        pro = 0.0
+        fat = 0.0
     }
 }

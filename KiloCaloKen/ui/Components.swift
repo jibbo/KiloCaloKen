@@ -120,7 +120,6 @@ struct FoodList: View{
             viewModel.updateFoods(todayFoods)
         })
         .onChange(of: todayFoods){
-            viewModel.resetMacros()
             viewModel.updateFoods(todayFoods)
         }
     }
@@ -136,8 +135,6 @@ struct RecentFoodList: View{
     private var viewModel: HomeViewModel
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
-        let calendar = Calendar.current
-        let startOfDay = calendar.startOfDay(for: Date())
         
         self.descriptor = FetchDescriptor(
             sortBy: [SortDescriptor(\LocalProduct.dateAdded)]
