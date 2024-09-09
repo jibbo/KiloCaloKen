@@ -25,6 +25,8 @@ final class HomeViewModel: ObservableObject{
     @Published var selectedDay: Date = Date.now
     @Published var searchTerm: String = ""
     
+    private var isEdit: Bool = false
+    
     private let repository: FoodRepository = RemoteRepository()
     private var modelContext: ModelContext?
     
@@ -35,6 +37,7 @@ final class HomeViewModel: ObservableObject{
     func showAddSheet(){
         self.sholdShowSearchProductSheet = true
         self.lastProductsFound = []
+        self.isEdit = false
     }
     
     @MainActor
@@ -76,13 +79,14 @@ final class HomeViewModel: ObservableObject{
         }
     }
     
-    func foodSelected(_ food: LocalProduct) {
+    func foodSelected(_ food: LocalProduct, isEdit: Bool = false) {
         self.sholdShowSearchProductSheet = false
         self.shouldShowLoading = false
         self.shouldShowPickProduct = false
         self.productToBeAdded =  food
         self.shouldShowQuantitySheet = true
         self.lastProductsFound = []
+        self.isEdit = isEdit
     }
     
     func addFood(_ quantity: String) {
@@ -93,9 +97,17 @@ final class HomeViewModel: ObservableObject{
             return
         }
         self.shouldShowLoading = true
-        let localFood: LocalProduct = LocalProduct.init(from: productToBeAdded!, quantity: quantityInNumber, dateAdded: selectedDay)
-        modelContext?.insert(localFood)
-        updateFoods([localFood])
+        if(isEdit){
+            self.removeFood(productToBeAdded!)
+            productToBeAdded?.quantity = quantityInNumber
+            try? modelContext?.save()
+            isEdit = false;
+            self.addFoodKCal(productToBeAdded!)
+        }else{
+            let localFood: LocalProduct = LocalProduct.init(from: productToBeAdded!, quantity: quantityInNumber, dateAdded: selectedDay)
+            modelContext?.insert(localFood)
+            self.addFoodKCal(localFood)
+        }
         self.shouldShowQuantitySheet = false
         self.shouldShowLoading = false
         self.productToBeAdded = nil
@@ -106,13 +118,17 @@ final class HomeViewModel: ObservableObject{
         removeFood(food)
     }
     
-    func updateFoods(_ foods: [LocalProduct]){
-        resetMacros()
-        for food in foods {
+    func addFoodKCal(_ food: LocalProduct){
             totalKcal+=Int(food.energyKcal100G * (food.quantity/100))
             cho+=Int((food.carbohydrates100G) * (food.quantity/100))
             pro+=Int((food.proteins100G) * (food.quantity/100))
             fat+=Int((food.fat100G)  * (food.quantity/100))
+    }
+    
+    func updateFoods(_ foods: [LocalProduct]){
+        resetMacros()
+        for food in foods {
+            addFoodKCal(food)
         }
     }
     

@@ -92,7 +92,7 @@ struct FoodList: View{
         List {
             ForEach(todayFoods, id: \.self){food in
                 Button(action:{
-                    viewModel.foodSelected(food)
+                    viewModel.foodSelected(food, isEdit: true)
                 }){
                     Text(food.productName)
                 }
@@ -223,7 +223,7 @@ struct SearchProductSheetView: View{
 struct QuantitySheetView: View{
     
     @EnvironmentObject private var viewModel: HomeViewModel
-    @State private var quantity: String = "100.0"
+    @State private var quantity: String = "100"
     @FocusState private var isFocused: Bool
     
     fileprivate func getFormattedMacro(macro: Double?) -> Text {
@@ -262,6 +262,7 @@ struct QuantitySheetView: View{
             Spacer()
             TextField("Quantity", text: $quantity).keyboardType(.numberPad).focused($isFocused).onAppear{
                 isFocused = true
+                self.quantity = String(viewModel.productToBeAdded?.quantity ?? 100.0)
             }
             Spacer()
             HStack {

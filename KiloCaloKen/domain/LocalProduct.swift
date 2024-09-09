@@ -15,7 +15,7 @@ class LocalProduct: Codable {
     let productName: String
     let imageThumbUrl: String?
     let dateAdded: Date
-    let quantity: Double // in grams
+    var quantity: Double // in grams
     let carbohydrates100G: Double
     let energyKcal100G: Double
     let fat100G: Double
